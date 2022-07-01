@@ -59,3 +59,47 @@ Example Input | Example Output
 It is preferable that you write this algorithm using JAVA. It is OK if you want to use another programming language e.g. C++.
 
 There are different ways to solve the problem highlighted above and the solution you come up with will tell us a lot about your skill as a developer and your ability to solve optimization problems.
+
+
+## Presentation of the repository
+This repository is implemented in C++. You don’t need any dependencies.
+Arborescence of repository:
+- main.cpp: Reading of the instances and execution of the algorithm.
+- debug.h: Only for debugging. To activate warnings and errors, uncomment line 4. 
+- Algorithms: Contains the algorithm skeleton. There is currently only one algorithm, branchAndCut.
+- DataStructures: Folder containing the 3 classes I coded for this algorithm: machine, instance, and solution.
+
+## How to execute this repo
+### Building
+```
+cmake ..
+cd build
+make
+```
+### Executing
+```
+./solveAsrHiring
+```
+### Debugging
+For debugging, you can activate warnings and errors. To this end, please uncomment line 4 in debug.h and rebuild.
+
+## How I solved this problem
+### Steps of reflection
+This problem could easily be solved by an optimization solver but I had to implement my own algorithm. I wanted to explore 2 possibilities:
+- First, some heuristics. This problem could be solved by a simulated annealing or some genetic algorithm, and the vector of chosen machines could be a great datastructure to be used for crossing or destroy/repair algorithms. At first, I began to explore in that direction, as I assumed the testing could be on very big instances (up to 100 days, 100 machines, and 100 dollars).
+- Secondly, some exact solving algorithms. I immediatly thought abound a branching algorithm. That is what I implemented, to test my functions. As I saw it was very quich on given instances, I did not pursue the (more complicated) heuristic approach.
+
+### Algorithm mechanism: branch and cut
+The main idea about branching is that, as the space of solution is restricted (for your instances, at most $$2^6$$ possibilities), we can explore it. The condition is that we can determine the maximizing criterion quickly - here, the final profit.
+So, we begin by ordering the machines by day of purchase and we can them one by one.
+Then, recursively, we compute the final profit of the solution with and without this machine. At each step, if the solution is acceptable, we memorize it if it is best than the best known final profit.
+A solution is not acceptable whenever the amount of money at a certain day is negative.
+We can cut a branch (i.e not explore further the branch) whenever a solution is not acceptable. When it is, we know that even by buying another machine later, the solution is never going to be acceptable. So we don’t have to explore this branch further.
+The algorithm memorizes the best final profit and returns it when it has finished exploring the search space.
+
+### To go further
+To go further with this problem, I could have implemented an heuristic such as genetic algorithm or simulated annealing. For the instances given, it is not necessary as an exact algorithm provides a good solution quickly. However, it could be interesting for bigger instances.
+I began implementing a simulated annealing before realizing it would not be useful.
+
+Thank you for considering my application for this role. I hope I have been clear in my explanations, and I hope we will be in contact soon.
+Sincerely, Anne-Lise
